@@ -55,9 +55,10 @@ const getNumberOfNeighborBombs = (bombBoard, rowIndex, columnIndex) => {
     let numberOfBombs = 0;
 
     neighborOffSets.forEach(offset => {
-        const neighborRowIndex = rowIndex + offset[0];
-        const neighborColumnIndex = columnIndex + offset[1];
+        const neighborRowIndex = rowIndex + offset[0];       // creates an offset effect checking the space to the sides
+        const neighborColumnIndex = columnIndex + offset[1]; // creates an offset effect checking the space above or below
 
+        // if the offsets find that there is a bomb in that space (by checking numerically), then increment the number of bombs.
         if(neighborRowIndex >= 0 && neighborRowIndex <= numberOfRows && neighborColumnIndex >= 0 && neighborColumnIndex <= numberOfColumns) {
             if (bombBoard[neighborRowIndex][neighborColumnIndex] === 'B') {
                 numberOfBombs++;
@@ -67,12 +68,13 @@ const getNumberOfNeighborBombs = (bombBoard, rowIndex, columnIndex) => {
     return numberOfBombs;
 };
 
+// function to allow the user to choose a coordinate based on x,y for them to check for bombs.
 const flipTile = (playerBoard, bombBoard, rowIndex, columnIndex) =>{
-    if (playerBoard[rowIndex][columnIndex] !== ' ') {
+    if (playerBoard[rowIndex][columnIndex] !== ' ') {   // if the tile isn't blank
         console.log('This tile has already been flipped!');
-    } else if (bombBoard[rowIndex][columnIndex] === 'B') {
+    } else if (bombBoard[rowIndex][columnIndex] === 'B') {  // if the tile contains a bomb
         playerBoard[rowIndex][columnIndex] = 'B';
-    } else {
+    } else {    // else the tile must not have been selected and not have a bomb
         playerBoard[rowIndex][columnIndex] = getNumberOfNeighborBombs(bombBoard, columnIndex, rowIndex);
     }
 };
@@ -81,9 +83,9 @@ const printBoard = (board) => {
     console.log(board.map(row => row.join(' | ')).join('\n'));
 };
 
-let playerBoard = generatePlayerBoard(5, 5);
-let bombBoard = generateBombBoard(5, 5, 5);
-flipTile(playerBoard, bombBoard, 2, 2);
+let playerBoard = generatePlayerBoard(5, 5);    // generate a 5x5 board
+let bombBoard = generateBombBoard(5, 5, 5);     // place bombs on a 5x5 board
+flipTile(playerBoard, bombBoard, 2, 2); // flip the tile at [2, 2]
 
 console.log('Player Board:');   // create the player board header in console
 printBoard(playerBoard);        // print the players board
